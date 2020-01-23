@@ -42,9 +42,34 @@ module.exports = {
     async update(request, response){
         //atualizar as informações
         //nome, avatar, bio, localização, tecnologias
+
+        const { name, github_username, bio } = request.body;
+
+        let dev = await Dev.findOne({ github_username });
+
+        // const techsArray = parseStringAsArray(techs);
+
+        // const location = {
+        //     type: 'Point',
+        //     coordinates: [longitude, latitude]
+        // };
+
+        dev.name = name;
+        dev.bio = bio;
+        // dev.avatar_url = avatar_url;
+        // dev.techs = techsArray;
+        // dev.location = location;
+
+        const ret = await dev.save();
+
+        return response.json({ ret });
     },
     async destroy(request, response){
-        //deletar um usuario
+        const { _id } = request.params;
+        
+        const ret = await Dev.deleteOne({ _id });
+
+        return response.json({ ret });
     },
 
-};
+}; 
